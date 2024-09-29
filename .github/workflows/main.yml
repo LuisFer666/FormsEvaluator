@@ -1,3 +1,6 @@
+name: Angular-CLI
+
+# Trigger
 on:
   push:
     branches:
@@ -9,13 +12,26 @@ permissions:
   id-token: write
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.build-publish.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
     steps:
-    - id: build-publish
-      uses: bitovi/github-actions-angular-to-github-pages@v1.0.0
+    - name: Checkout
+      uses: actions/checkout@v4.2.0
+      # Setup nodeJS
+    - name: Setup nodeJs
+      uses: actions/setup-node@v4.0.4
       with:
-        path: dist/forms-evaluator
+        node-version: "20"
+      # Install dependencies
+    - name: Install deps
+      run: npm i
+      # Build app for production
+    - name: Build app bundle
+      run: npm run build:prod
+      # Deploy to GitHub pages
+    - name: Deploy to pages
+      uses: crazy-max/ghaction-github-pages@v4.0.0
+      with:
+        build_dir: dist/
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
