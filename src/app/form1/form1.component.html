@@ -12,6 +12,98 @@
     <mat-card-content>
       <div class="row">
         <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Nombres" formControlName="nombres">
+            @if (addressForm.controls['nombres'].hasError('required')) {
+              <mat-error>Los nombres son <strong>obligatorios</strong></mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Apellidos" formControlName="apellidos">
+            @if (addressForm.controls['apellidos'].hasError('required')) {
+              <mat-error>Los apellidos son <strong>obligatorios</strong></mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput #edad min="1" max="100" placeholder="Edad" type="number"
+            formControlName="edad">
+            @if (addressForm.controls['edad'].hasError('required')) {
+              <mat-error>La edad es <strong>obligatoria</strong></mat-error>
+            }@else if (addressForm.controls['edad'].hasError('min')) {
+              <mat-error>La edad minima es <strong>{{addressForm.controls.edad.errors?.['min'].min}} años</strong></mat-error>
+            }@else if (addressForm.controls['edad'].hasError('max')) {
+              <mat-error>La edad máxima es <strong>{{addressForm.controls.edad.errors?.['max'].max}} años</strong></mat-error>
+            }
+            <mat-hint align="end">{{edad.value.length}} / 3</mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col">
+        <mat-form-field class="full-width">
+          <mat-select placeholder="Género" formControlName="genero">
+            <mat-option value="femenino">Femenino</mat-option>
+            <mat-option value="masculino">Masculino</mat-option>
+          </mat-select>
+          @if (addressForm.controls['genero'].hasError('required')) {
+            <mat-error>El género es <strong>obligatorio</strong></mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Colegio" formControlName="colegio">
+            @if (addressForm.controls['colegio'].hasError('required')) {
+              <mat-error>El colegio es <strong>obligatorio</strong></mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Curso" formControlName="curso">
+            @if (addressForm.controls['curso'].hasError('required')) {
+              <mat-error>El curso es <strong>obligatorio</strong></mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Bachillerato" formControlName="bachillerato">
+            @if (addressForm.controls['bachillerato'].hasError('required')) {
+              <mat-error>El bachillerato es <strong>obligatorio</strong></mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+      @for (pregunta of preguntas; track pregunta) {
+        <div class="row">
+          <div class="col">
+            <label [id]="getId($index)">{{$index + 1}}. {{pregunta}}.</label>
+          </div>
+        </div>
+        <div class="row mb-10">
+          <div class="col">
+            <mat-radio-group (aria-labelledby)="getId($index)" [formControlName]="getId($index)">
+              <mat-radio-button [value]="false">No estoy de acuerdo</mat-radio-button>
+              <mat-radio-button [value]="true">Estoy de acuerdo</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+      }
+
+    <!--
+      <div class="row">
+        <div class="col">
           <label id="pregunta1">1. Para mí es importante recibir la aprobación de los demás.</label>
         </div>
       </div>
@@ -36,85 +128,7 @@
           </mat-radio-group>
         </div>
       </div>
-      <div class="row">
-        <div class="col">
-          <mat-form-field class="full-width">
-            <input matInput placeholder="Company" formControlName="company">
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <mat-form-field class="full-width">
-            <input matInput placeholder="First name" formControlName="firstName">
-            @if (addressForm.controls['firstName'].hasError('required')) {
-            <mat-error>First name is <strong>required</strong></mat-error>
-            }
-          </mat-form-field>
-        </div>
-        <div class="col">
-          <mat-form-field class="full-width">
-            <input matInput placeholder="Last name" formControlName="lastName">
-            @if (addressForm.controls['lastName'].hasError('required')) {
-            <mat-error>Last name is <strong>required</strong></mat-error>
-            }
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <mat-form-field class="full-width">
-            <textarea matInput placeholder="Address" formControlName="address"></textarea>
-            @if (addressForm.controls['address'].hasError('required')) {
-            <mat-error>Address is <strong>required</strong></mat-error>
-            }
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          @if (hasUnitNumber) {
-          <mat-form-field class="full-width">
-            <textarea matInput placeholder="Address 2" formControlName="address2"></textarea>
-          </mat-form-field>
-          } @else {
-          <button mat-button type="button" (click)="hasUnitNumber = !hasUnitNumber">
-            + Add C/O, Apt, Suite, Unit
-          </button>
-          }
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <mat-form-field class="full-width">
-            <input matInput placeholder="City" formControlName="city">
-            @if (addressForm.controls['city'].hasError('required')) {
-            <mat-error>City is <strong>required</strong></mat-error>
-            }
-          </mat-form-field>
-        </div>
-        <div class="col">
-          <mat-form-field class="full-width">
-            <mat-select placeholder="State" formControlName="state">
-              @for (state of states; track state) {
-              <mat-option [value]="state.abbreviation">{{ state.name }}</mat-option>
-              }
-            </mat-select>
-            @if (addressForm.controls['state'].hasError('required')) {
-            <mat-error>State is <strong>required</strong></mat-error>
-            }
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <mat-form-field class="full-width">
-            <input matInput #postalCode maxlength="5" placeholder="Postal Code" type="number"
-              formControlName="postalCode">
-            <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
-          </mat-form-field>
-        </div>
-      </div>
+    -->
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button color="primary" type="submit">Submit</button>
